@@ -2,8 +2,11 @@ package li.xiangyang.android.midialog;
 
 import android.content.Context;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by bac on 16/5/11.
@@ -43,12 +46,27 @@ public class LinearNumberSelect2Dialog extends Select2Dialog {
             @Override
             public void onDone(int left, int right) {
                 if (listener != null) {
-                    Number leftValue = floatValue ? Float.parseFloat(items.get(left)) : Integer.parseInt(items.get(left));
-                    Number rightValue = floatValueRight ? Float.parseFloat(itemsRight.get(right)) : Integer.parseInt(itemsRight.get(right));
+                    Number leftValue = floatValue ? parseFloat(items.get(left)) : Integer.parseInt(items.get(left));
+                    Number rightValue = floatValueRight ? parseFloat(itemsRight.get(right)) : Integer.parseInt(itemsRight.get(right));
                     listener.onDone(leftValue, rightValue);
                 }
             }
         });
+    }
+
+    /**
+     * 西班牙语等的浮点型是 ", " 分割的，需要另外处理
+     * @param str
+     * @return
+     */
+    private float parseFloat(String str) {
+        NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
+        try {
+            return nf.parse(str).floatValue();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0.0f;
+        }
     }
 
     public void setLeft(String unit, int start, int end, int step, int selelction) {
