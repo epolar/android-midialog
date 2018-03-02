@@ -2,8 +2,11 @@ package li.xiangyang.android.midialog;
 
 import android.content.Context;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by bac on 16/5/11.
@@ -54,7 +57,7 @@ public class LinearNumberSelectDialog extends SelectDialog {
             public void onDone(int selection) {
                 if (listener != null) {
                     if (floatValue) {
-                        listener.onDone(Float.parseFloat(items.get(selection)));
+                        listener.onDone(parseFloat(items.get(selection)));
                     } else {
                         listener.onDone(Integer.parseInt(items.get(selection)));
                     }
@@ -67,6 +70,21 @@ public class LinearNumberSelectDialog extends SelectDialog {
         super.setItems(items, selection);
         floatValue = true;
     }
+    /**
+     * 西班牙语等的浮点型是 ", " 分割的，需要另外处理
+     * @param str
+     * @return
+     */
+    private float parseFloat(String str) {
+        NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
+        try {
+            return nf.parse(str).floatValue();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0.0f;
+        }
+    }
+
 
     public static interface IListener {
         void onCancel();
