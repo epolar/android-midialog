@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">MiDialog</string>
     <string name="midialog_done">Done</string>
     <string name="midialog_cancel">Cancel</string>
     <string name="midialog_uint_year"> </string>
